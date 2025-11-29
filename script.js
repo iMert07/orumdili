@@ -52,7 +52,7 @@ const translations = {
         'feedback_button_text': 'Geri Bildirim',
         'search_placeholder': 'Kelime ara...',
         'about_title': 'Hakkında',
-        'about_text_1': 'Bu sözlük, Orum Dili'ne ait kelimeleri ve kökenlerini keşfetmeniz için hazırlanmıştır. Bu dil Anadolu Türkçesinin özleştirilmesiyle ve kolaylaştırılmasıyla oluşan yapay bir dildir. Amacım, dilimizin öz zenginliğini kanıtlamaktır.',
+        'about_text_1': 'Bu sözlük, Orum Diline ait kelimeleri ve kökenlerini keşfetmeniz için hazırlanmıştır. Bu dil Anadolu Türkçesinin özleştirilmesiyle ve kolaylaştırılmasıyla oluşan yapay bir dildir. Amacım, dilimizin öz zenginliğini kanıtlamaktır.',
         'about_text_2': 'Herhangi bir geri bildiriminiz, öneriniz veya yeni sözcük ekleme isteğiniz varsa; lütfen yukarıdaki menüden "Geri Bildirim" butonunu kullanarak bana ulaşın. Katkılarınızla bu sözlüğü daha da zenginleştirebiliriz!',
         'feedback_title': 'Geri Bildirim',
         'feedback_placeholder': 'Geri bildiriminizi buraya yazın...',

@@ -42,7 +42,8 @@ const latinToGreekMap = {
     "ö":"Ω","Ö":"Ω",
     "f":"F","F":"F",
     "x":"Ψ","X":"Ψ",
-    "j":"Σ","J":"Σ"
+    "j":"Σ","J":"Σ",
+    "0":"θ"
 };
 
 const translations = {

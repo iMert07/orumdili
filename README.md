@@ -1,0 +1,2 @@
+Bu sözlük, yapay dilim Orum Diline ait kelimeleri ve kökenlerini keşfetmeniz için yapaay zeka tarafından hazırlanmıştır. Bu dil, Anadolu Türkçesinin özleştirilmesiyle ve kolaylaştırılmasıyla ve ayrıca Azerbaycan Türkçesinden esintilerle oluşturulmuştur. Amacım, dilimizin öz zenginliğini kanıtlamaktır. Ancak yapay etkiler görebileceğinizi de unutmayın.
+Herhangi bir geri bildiriminiz veya öneriniz varsa; sözlük içindeki "Geri Bildirim" butonunu kullanarak bana ulaşın. Katkılarınızla bu sözlüğü daha da geliştirebiliriz!

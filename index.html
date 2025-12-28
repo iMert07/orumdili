@@ -51,7 +51,7 @@
                             <h1 class="text-xl font-bold" data-key="title"></h1>
                         </div>
                         <nav class="hidden md:flex items-center gap-8">
-                            <a class="text-base font-medium hover:text-primary transition-colors cursor-pointer" onclick="showPage('about')" data-key="about_page_text"></a>
+                            <a class="text-base font-medium hover:text-primary transition-colors cursor-pointer" href="https://cevirici.vercel.app/" target="_blank" data-key="about_page_text"></a>
                             <a class="text-base font-medium hover:text-primary transition-colors cursor-pointer" onclick="toggleFeedbackForm()" data-key="feedback_button_text"></a>
                         </nav>
                     </div>
@@ -83,7 +83,7 @@
                 </div>
             </div>
             <div id="mobile-menu" class="md:hidden hidden bg-subtle-light dark:bg-subtle-dark border-b border-subtle-light dark:border-subtle-dark py-2 px-4">
-                <a class="block text-base font-medium hover:text-primary transition-colors cursor-pointer px-4 py-2" onclick="showPage('about'); toggleMobileMenu();" data-key="about_page_text"></a>
+                <a class="block text-base font-medium hover:text-primary transition-colors cursor-pointer px-4 py-2" href="https://cevirici.vercel.app/" target="_blank" data-key="about_page_text"></a>
                 <a class="block text-base font-medium hover:text-primary transition-colors cursor-pointer px-4 py-2" onclick="toggleFeedbackForm(); toggleMobileMenu();" data-key="feedback_button_text"></a>
             </div>
         </header>
@@ -101,15 +101,14 @@
                         <div id="suggestions" class="max-h-[20rem] overflow-y-auto p-2"></div>
                     </div>
                 </div>
-                <div id="result" class="mb-8 md:mb-12"></div>
-            </div>
 
-            <div id="about-content" class="max-w-4xl mx-auto hidden">
-                <div class="bg-subtle-light dark:bg-subtle-dark rounded-lg sm:rounded-xl p-6 sm:p-8">
-                    <h2 class="text-2xl font-bold mb-4" data-key="about_title"></h2>
-                    <p class="text-base text-muted-light dark:text-muted-dark leading-relaxed" data-key="about_text_1"></p>
-                    <p class="text-base text-muted-light dark:text-muted-dark leading-relaxed mt-4" data-key="about_text_2"></p>
+                <div id="welcome-box" class="mb-8 p-6 bg-subtle-light dark:bg-subtle-dark rounded-lg sm:rounded-xl border-l-4 border-primary shadow-sm">
+                    <h2 class="text-xl font-bold mb-3 text-primary" data-key="about_title"></h2>
+                    <p class="text-base leading-relaxed mb-4" data-key="about_text_1"></p>
+                    <p class="text-sm text-muted-light dark:text-muted-dark italic" data-key="about_text_2"></p>
                 </div>
+
+                <div id="result" class="mb-8 md:mb-12"></div>
             </div>
         </main>
     </div>

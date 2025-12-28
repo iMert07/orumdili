@@ -72,11 +72,45 @@ function updateText(lang) {
     textElements.forEach(el => {
         const key = el.getAttribute('data-key');
         if (translations[lang][key]) {
-            el.textContent = translations[lang][key];
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                el.placeholder = translations[lang][key];
+                // Focus olunca placeholder'ı silme özelliği
+                el.onfocus = () => { el.dataset.tempPlaceholder = el.placeholder; el.placeholder = ''; };
+                el.onblur = () => { if (el.placeholder === '') el.placeholder = el.dataset.tempPlaceholder; };
+            } else {
+                el.textContent = translations[lang][key];
+            }
         } else if (lang === 'gr' && translations['tr'][key]) {
-            el.textContent = convertToGreek(translations['tr'][key]);
+            const greekText = convertToGreek(translations['tr'][key]);
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                el.placeholder = greekText;
+                el.onfocus = () => { el.dataset.tempPlaceholder = el.placeholder; el.placeholder = ''; };
+                el.onblur = () => { if (el.placeholder === '') el.placeholder = el.dataset.tempPlaceholder; };
+            } else {
+                el.textContent = greekText;
+            }
         }
     });
+}
+
+// Sayaçları hesaplayan fonksiyon
+function calculateStats() {
+    const entryCount = allWords.length;
+    let totalWordCount = 0;
+
+    allWords.forEach(row => {
+        totalWordCount += 1; // Ana kelime
+        if (row['Eş Anlamlılar']) {
+            const synonyms = row['Eş Anlamlılar'].split(',').filter(s => s.trim() !== '');
+            totalWordCount += synonyms.length;
+        }
+    });
+
+    const entryLabel = isGreek ? convertToGreek("Madde") : "Madde";
+    const wordLabel = isGreek ? convertToGreek("Kelime") : "Kelime";
+
+    document.getElementById('entry-count').textContent = `${entryCount} ${entryLabel}`;
+    document.getElementById('word-count').textContent = `${totalWordCount} ${wordLabel}`;
 }
 
 async function fetchWords() {
@@ -90,6 +124,7 @@ async function fetchWords() {
         setupAlphabetToggle();
         showPage('home');
         updateText('tr');
+        calculateStats(); // Veriler gelince sayaçları çalıştır
     } catch (error) {
         console.error('Hata:', error);
     }
@@ -203,7 +238,7 @@ function showResult(word) {
 }
 
 function clearResult() {
-    lastSelectedWord = null; // Seçili kelimeyi temizle
+    lastSelectedWord = null;
     document.getElementById('result').innerHTML = '';
     document.getElementById('searchInput').value = '';
     document.getElementById('suggestions-container').classList.add('hidden');
@@ -241,17 +276,23 @@ function setupAlphabetToggle() {
         document.getElementById('alphabet-toggle-latin').classList.toggle('hidden');
         document.getElementById('alphabet-toggle-cyrillic').classList.toggle('hidden');
         updateText(isGreek ? 'gr' : 'tr');
-        // Sadece bir kelime kartı açıksa güncelle
+        calculateStats(); // Alfabe değişince sayaç dilini de güncelle
         if (lastSelectedWord) {
             showResult(lastSelectedWord);
         } else {
-            // Ana sayfadaysak sonucu temiz tut
             document.getElementById('result').innerHTML = '';
         }
     };
 }
 
-function toggleFeedbackForm() { document.getElementById('feedbackModal').classList.toggle('hidden'); }
+function toggleFeedbackForm() { 
+    const modal = document.getElementById('feedbackModal');
+    modal.classList.toggle('hidden');
+    if (!modal.classList.contains('hidden')) {
+        document.getElementById('feedbackText').value = ''; // Modal her açıldığında temizle
+    }
+}
+
 function submitFeedback() {
     const txt = document.getElementById('feedbackText').value.trim();
     if (!txt) return;
@@ -259,11 +300,14 @@ function submitFeedback() {
     fetch('https://sheetdb.io/api/v1/mt09gl0tun8di', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ data: { "Tarih": tarih, "Mesaj": txt } }) })
     .then(() => toggleFeedbackForm());
 }
+
 function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+
 function convertToGreek(text) {
     if (!text) return '';
     let res = '';
     for (let c of text) { res += latinToGreekMap[c] || c; }
     return res;
 }
+
 fetchWords();

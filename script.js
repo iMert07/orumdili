@@ -52,10 +52,10 @@ const latinToGreekMap = {
 const translations = {
     'tr': {
         'title': 'Orum Dili',
-        'about_page_text': 'Hakkında',
+        'about_page_text': 'Çeviri',
         'feedback_button_text': 'Geri Bildirim',
         'search_placeholder': 'Kelime ara...',
-        'about_title': 'Hakkında',
+        'about_title': 'Hoş Geldiniz',
         'about_text_1': 'Bu sözlük, Orum Diline ait kelimeleri ve kökenlerini keşfetmeniz için hazırlanmıştır. Bu dil, Anadolu Türkçesinin özleştirilmesiyle ve kolaylaştırılmasıyla ve ayrıca Azerbaycan Türkçesinden esintilerle oluşturulan yapay bir dildir. Amacım, dilimizin öz zenginliğini kanıtlamaktır. Ancak yapay etkiler görebileceğinizi de unutmayın.',
         'about_text_2': 'Herhangi bir geri bildiriminiz, öneriniz veya yeni sözcük ekleme isteğiniz varsa; lütfen yukarıdaki menüden "Geri Bildirim" butonunu kullanarak bana ulaşın. Katkılarınızla bu sözlüğü daha da zenginleştirebiliriz!',
         'feedback_title': 'Geri Bildirim',
@@ -122,19 +122,12 @@ async function fetchWords() {
 
 function showPage(pageId) {
     const homeContent = document.getElementById('home-content');
-    const aboutContent = document.getElementById('about-content');
     const searchInput = document.getElementById('searchInput');
-
-    homeContent.classList.add('hidden');
-    aboutContent.classList.add('hidden');
-    searchInput.disabled = true;
 
     if (pageId === 'home') {
         homeContent.classList.remove('hidden');
         searchInput.disabled = false;
         clearResult();
-    } else if (pageId === 'about') {
-        aboutContent.classList.remove('hidden');
     }
 }
 
@@ -142,6 +135,7 @@ function setupSearch() {
     const searchInput = document.getElementById('searchInput');
     const suggestionsDiv = document.getElementById('suggestions');
     const resultDiv = document.getElementById('result');
+    const welcomeBox = document.getElementById('welcome-box');
 
     displaySearchHistory();
 
@@ -152,6 +146,7 @@ function setupSearch() {
         if (!query) {
             suggestionsDiv.innerHTML = '';
             resultDiv.innerHTML = '';
+            welcomeBox.classList.remove('hidden'); // Geri silince kutuyu geri getir
             displaySearchHistory();
             return;
         }
@@ -165,12 +160,14 @@ function setupSearch() {
 
             let alreadyMatched = false;
 
+            // 1. Ana Kelime Eşleşmesi
             if (mainNorm.startsWith(query)) {
                 matches.push({ type: 'main', word: mainWord, data: row });
                 alreadyMatched = true;
                 return;
             }
             
+            // 2. Eş Anlamlı Eşleşmesi
             let synonymMatch = false;
             synonyms.forEach(syn => {
                 if (normalizeString(syn).startsWith(query)) {
@@ -184,6 +181,7 @@ function setupSearch() {
             
             if (alreadyMatched) return;
 
+            // 3. Tür Eşleşmesi
             types.forEach(typeValue => {
                 if (normalizeString(typeValue).startsWith(query)) {
                      if (!alreadyMatched) {
@@ -280,6 +278,7 @@ function displaySuggestions(matches, query) {
 
 function selectWord(word) {
     lastSelectedWord = word;
+    document.getElementById('welcome-box').classList.add('hidden'); // Seçince kutuyu gizle
     document.getElementById('searchInput').value = isGreek ? convertToGreek(word.Sözcük) : word.Sözcük;
     document.getElementById('suggestions').innerHTML = '';
     document.getElementById('suggestions-container').classList.add('hidden');
@@ -307,14 +306,14 @@ function showResult(word) {
 
     resultDiv.innerHTML = `
         <div class="bg-subtle-light dark:bg-subtle-dark rounded-lg sm:rounded-xl overflow-hidden p-4 sm:p-6">
-            <h2 class="text-3xl font-bold mb-4">${fields.word}</h2>
+            <h2 class="text-3xl font-bold mb-4 text-primary">${fields.word}</h2>
             ${fields.type ? `<p class="text-sm text-muted-light dark:text-muted-dark mb-4">${fields.type}</p>` : ''}
             <hr class="border-t border-subtle-light dark:border-subtle-dark my-4">
             ${fields.desc ? `<div class="mb-4"><span class="font-bold text-lg">${t('description_title')}</span><p class="text-base mt-1">${fields.desc}</p></div>` : ''}
             <hr class="border-t border-subtle-light dark:border-subtle-dark my-4">
             ${fields.ety ? `<div class="mb-4"><span class="font-bold text-lg">${t('etymology_title')}</span><p class="text-base mt-1">${fields.ety}</p></div>` : ''}
             <hr class="border-t border-subtle-light dark:border-subtle-dark my-4">
-            ${fields.example ? `<div class="mb-4"><span class="font-bold text-lg">${t('example_title')}</span><p class="text-base mt-1">${fields.example}</p></div>` : ''}
+            ${fields.example ? `<div class="mb-4"><span class="font-bold text-lg">${t('example_title')}</span><p class="text-base mt-1 italic">"${fields.example}"</p></div>` : ''}
             <hr class="border-t border-subtle-light dark:border-subtle-dark my-4">
             ${fields.synonyms ? `<div class="mb-4"><span class="font-bold text-lg">${t('synonyms_title')}</span><p class="text-base mt-1">${fields.synonyms}</p></div>` : ''}
         </div>`;
@@ -324,6 +323,7 @@ function clearResult() {
     document.getElementById('result').innerHTML = '';
     document.getElementById('searchInput').value = '';
     document.getElementById('suggestions-container').classList.add('hidden');
+    document.getElementById('welcome-box').classList.remove('hidden'); // Sıfırlayınca kutu geri gelsin
     displaySearchHistory();
 }
 
@@ -396,5 +396,4 @@ function convertToGreek(text) {
     return convertedText;
 }
 
-// Başlat
 fetchWords();

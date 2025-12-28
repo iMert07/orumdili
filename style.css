@@ -1,0 +1,16 @@
+/* Gelecekte eklemek isteyeceğiniz özel animasyonlar veya CSS kuralları için */
+.suggestion:last-child {
+    border-bottom: none;
+}
+
+/* Scrollbar özelleştirme */
+#suggestions::-webkit-scrollbar {
+    width: 6px;
+}
+#suggestions::-webkit-scrollbar-track {
+    background: transparent;
+}
+#suggestions::-webkit-scrollbar-thumb {
+    background: #1193d4;
+    border-radius: 10px;
+}
